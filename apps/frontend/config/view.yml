@@ -1,0 +1,17 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/13-View
+
+default:
+  metas:
+    charset:      utf-8
+    viewport:     width=device-width, initial-scale=1.0
+    title:        Car Management System for Checo Pérez
+    description:  Car Management System for Checo Pérez
+    keywords:     car managemente system, symfony, project, checo perez
+
+  stylesheets:    [bootstrap.min.css, bootstrap-responsive.min.css, skin.css]
+
+  javascripts:    [http://code.jquery.com/jquery-1.9.1.min.js, http://code.jquery.com/jquery-migrate-1.1.1.min.js, bootstrap.min.js]
+
+  has_layout:     true
+  layout:         layout

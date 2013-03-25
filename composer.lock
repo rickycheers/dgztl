@@ -1,0 +1,32 @@
+{
+    "hash": "1f5dd8003079d2e794cde09c39cdf76d",
+    "packages": [
+        {
+            "name": "symfony/symfony1",
+            "version": "1.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/symfony/symfony1/archive/1.4.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ],
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}

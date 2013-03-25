@@ -1,0 +1,137 @@
+Car:
+  connection: doctrine
+  tableName: car
+  actAs:
+    Timestampable:
+      created:
+        name: date_created
+        type: timestamp
+        format: Y-m-d H:i:s
+      updated:
+        name: date_modified
+        type: timestamp
+        format: Y-m-d H:i:s
+  columns:
+    id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+      autoincrement: true
+    brand:
+      type: string(60)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    model:
+      type: string(60)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    color:
+      type: string(60)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    status:
+      type: enum(4)
+      fixed: false
+      unsigned: false
+      values:
+        - new
+        - used
+      primary: false
+      notnull: true
+      autoincrement: false
+    mileage:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    date_created:
+      type: timestamp(25)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    date_modified:
+      type: timestamp(25)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    user_id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+  relations:
+    User:
+      local: user_id
+      foreign: id
+      type: one
+User:
+  connection: doctrine
+  tableName: user
+  actAs:
+    Timestampable:
+      created:
+        name: date_created
+        type: timestamp
+        format: Y-m-d H:i:s
+      updated:
+        name: date_modified
+        type: timestamp
+        format: Y-m-d H:i:s
+  columns:
+    id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+      autoincrement: true
+    first_name:
+      type: string(45)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    last_name:
+      type: string(45)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    date_created:
+      type: timestamp(25)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    date_modified:
+      type: timestamp(25)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+  relations:
+    Car:
+      local: id
+      foreign: user_id
+      type: many

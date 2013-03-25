@@ -1,0 +1,7 @@
+all:
+  doctrine:
+    class: sfDoctrineDatabase
+    param:
+      dsn: 'mysql:host=localhost;dbname=car_mgmt_sys'
+      username: checo_perez
+      password: Ch3c0_p3r3z

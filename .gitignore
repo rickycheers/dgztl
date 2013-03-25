@@ -1,0 +1,7 @@
+.settings
+.buildpath
+.project
+/data/erd-model.mwb.bak
+/cache/frontend/
+/lib/vendor
+/log/*.log

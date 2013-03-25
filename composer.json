@@ -1,0 +1,32 @@
+{
+    "name": "montealegreluis/carmsys",
+    "description": "CMS (Car Management System) for Checo Pérez",
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luis Montealegre",
+            "email": "montealegreluis@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "config": {
+        "vendor-dir": "lib/vendor"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "symfony/symfony1",
+                "version": "1.4",
+                "dist": {
+                    "url": "https://github.com/symfony/symfony1/archive/1.4.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
+    "require": {
+        "symfony/symfony1": "1.4"
+    }
+}

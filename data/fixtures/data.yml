@@ -1,0 +1,39 @@
+Car:
+  Car_1:
+    brand: Chevrolet
+    model: Corvette
+    color: Red
+    status: new
+    mileage: '0'
+    date_created: '2013-03-23 21:08:36'
+    date_modified: '2013-03-24 00:03:02'
+    User: User_1
+  Car_2:
+    brand: Audi
+    model: A4
+    color: White
+    status: new
+    mileage: '0'
+    date_created: '2013-03-24 00:25:51'
+    date_modified: '2013-03-24 00:25:51'
+    User: User_2
+  Car_3:
+    brand: Hyundai
+    model: Sonata
+    color: White
+    status: new
+    mileage: '0'
+    date_created: '2013-03-24 00:30:42'
+    date_modified: '2013-03-24 13:31:46'
+    User: User_2
+User:
+  User_1:
+    first_name: 'Luis'
+    last_name: 'Montealegre Vázquez'
+    date_created: '2008-01-01 00:00:00'
+    date_modified: '2013-03-23 19:20:07'
+  User_2:
+    first_name: Meri
+    last_name: 'Michimani Sauce'
+    date_created: '2013-03-24 00:23:37'
+    date_modified: '2013-03-24 00:24:47'
