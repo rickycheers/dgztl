@@ -6,8 +6,28 @@
  * @subpackage user
  * @author     Luis Montealegre <montealegreluis@gmail.com>
  */
+use \Application\Container\UserContainer;
+
+/**
+ * User actions.
+ */
 class userActions extends sfActions
 {
+    /**
+     * @var \Application\Service\UserService
+     */
+    protected $service;
+
+    /**
+     * Initialize dependency injection container
+     */
+    public function __construct($context, $moduleName, $actionName)
+    {
+        parent::__construct($context, $moduleName, $actionName);
+        $container = new UserContainer();
+        $this->service = $container['user'];
+    }
+
     /**
      * Retrieve all the users and the count of the cars that they own
      *
@@ -15,7 +35,7 @@ class userActions extends sfActions
      */
     public function executeIndex(sfWebRequest $request)
     {
-        $this->users = UserTable::getInstance()->findAllWithCarCount();
+        $this->users = $this->service->findAllWithCarCount();
     }
 
     /**
@@ -26,9 +46,7 @@ class userActions extends sfActions
      */
     public function executeShow(sfWebRequest $request)
     {
-        $this->user = UserTable::getInstance()->findOneWithCarInfo(
-            $request->getParameter('id')
-        );
+        $this->user = $this->service->findOneWithCarInfo($request->getParameter('id'));
         $this->forward404Unless($this->user);
     }
 
@@ -39,7 +57,7 @@ class userActions extends sfActions
      */
     public function executeNew(sfWebRequest $request)
     {
-        $this->form = new UserForm();
+        $this->form = $this->service->getUserForm();
     }
 
     /**
@@ -51,8 +69,8 @@ class userActions extends sfActions
     {
         $this->forward404Unless($request->isMethod(sfRequest::POST));
 
-        $this->form = new UserForm();
-        $this->processForm($request, $this->form);
+        $this->form = $this->service->getUserForm();
+        $this->processForm($request, $this->form->getName());
 
         $this->setTemplate('new');
     }
@@ -66,7 +84,7 @@ class userActions extends sfActions
     {
         $user = $this->retrieveUser($request->getParameter('id'));
 
-        $this->form = new UserForm($user);
+        $this->form = $this->service->getUserForm()->setUser($user);
     }
 
     /**
@@ -81,9 +99,9 @@ class userActions extends sfActions
         );
 
         $user = $this->retrieveUser($request->getParameter('id'));
-        $this->form = new UserForm($user);
+        $this->form = $this->service->getUserForm()->setUser($user);
 
-        $this->processForm($request, $this->form);
+        $this->processForm($request, $this->form->getName());
 
         $this->setTemplate('edit');
     }
@@ -109,15 +127,11 @@ class userActions extends sfActions
      * @param sfWebRequest $request
      * @param sfForm $form
      */
-    protected function processForm(sfWebRequest $request, sfForm $form)
+    protected function processForm(sfWebRequest $request, $formName)
     {
-        $form->bind(
-            $request->getParameter($form->getName()), $request->getFiles($form->getName())
-        );
+        if ($this->service->isValid($request->getParameter($formName))) {
 
-        if ($form->isValid()) {
-
-            $user = $form->save();
+            $user = $this->service->saveUser();
             $this->redirect('user/show?id=' . $user->getId());
         }
     }
@@ -130,7 +144,7 @@ class userActions extends sfActions
      */
     protected function retrieveUser($userId)
     {
-        $user = UserTable::getInstance()->find($userId);
+        $user = $this->service->find($userId);
         $this->forward404Unless($user, sprintf('User does not exist (%s).', $userId));
 
         return $user;

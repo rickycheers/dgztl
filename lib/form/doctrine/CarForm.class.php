@@ -6,17 +6,38 @@
  * @subpackage form
  * @author     Luis Montealegre <montealegreluis@gmail.com>
  */
-class CarForm extends BaseCarForm
-{
-  public function configure()
-  {
-  }
+use \Application\Form\CarFormInterface;
+use \Car;
 
-  /**
-   * @param int $userId
-   */
-  public function setUserId($userId)
-  {
-      $this->setDefault('user_id', (int)$userId);
-  }
+/**
+ * Car form.
+ */
+class CarForm extends BaseCarForm implements CarFormInterface
+{
+    /**
+     * @param \Car $car
+     * @return \CarForm
+     */
+    public function setCar(Car $car)
+    {
+        $this->object = $car;
+        $this->isNew = !$this->getObject()->exists();
+
+        //Set validation options for field 'id' properly
+        $validators = $this->getValidatorSchema();
+        $validators['id']->setOption('required', true);
+        $validators['id']->setOption('choices', array($car->getId()));
+
+        $this->updateDefaultsFromObject();
+
+        return $this;
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function setUserId($userId)
+    {
+        $this->setDefault('user_id', (int)$userId);
+    }
 }

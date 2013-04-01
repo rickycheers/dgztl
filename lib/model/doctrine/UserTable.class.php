@@ -1,6 +1,7 @@
 <?php
 use \Doctrine_Query as Query;
 use \Doctrine_Table as Table;
+use \Application\Table\UserTableInterface;
 
 /**
  * UserTable
@@ -9,18 +10,8 @@ use \Doctrine_Table as Table;
  * @subpackage model
  * @author     Luis Montealegre <montealegreluis@gmail.com>
  */
-class UserTable extends Table
+class UserTable extends Table implements UserTableInterface
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return UserTable
-     */
-    public static function getInstance()
-    {
-        return Doctrine_Core::getTable('User');
-    }
-
     /**
      * @return \Doctrine_Collection
      */
@@ -35,6 +26,7 @@ class UserTable extends Table
     }
 
     /**
+     * @param int $userId
      * @return \Doctrine_Collection
      */
     public function findOneWithCarInfo($userId)
@@ -47,6 +39,7 @@ class UserTable extends Table
                     c.id,
                     c.brand,
                     c.model,
+                    c.color,
                     c.status,
                     c.mileage'
                  )
@@ -54,5 +47,13 @@ class UserTable extends Table
                  ->leftJoin('u.Car c')
                  ->where('u.id = ?', (int)$userId)
                  ->fetchOne();
+    }
+
+    /**
+     * @param string $userId
+     */
+    public function find($userId = null)
+    {
+        return parent::find((int)$userId);
     }
 }

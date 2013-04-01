@@ -1,16 +1,31 @@
 <?php
+use Application\Form\UserFormInterface;
 
 /**
  * User form.
  *
  * @package    dgztl
  * @subpackage form
- * @author     Your name here
- * @version    SVN: $Id: sfDoctrineFormTemplate.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * @author     Luis Montealegre <montealegreluis@gmail.com>
  */
-class UserForm extends BaseUserForm
+class UserForm extends BaseUserForm implements UserFormInterface
 {
-  public function configure()
-  {
-  }
+    /**
+     * @param \User $user
+     * @return \UserForm
+     */
+    public function setUser(User $user)
+    {
+        $this->object = $user;
+        $this->isNew = !$this->getObject()->exists();
+
+        //Set validation options for field 'id' properly
+        $validators = $this->getValidatorSchema();
+        $validators['id']->setOption('required', true);
+        $validators['id']->setOption('choices', array($user->getId()));
+
+        $this->updateDefaultsFromObject();
+
+        return $this;
+    }
 }

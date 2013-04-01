@@ -2,11 +2,20 @@
 # http://www.symfony-project.org/reference/1_4/en/05-Factories
 
 prod:
+  mailer:
+  class: sfMailer
+  param:
+    logging:           %SF_LOGGING_ENABLED%
+    charset:           %SF_CHARSET%
+    delivery_strategy: realtime
+    transport:
+      class: Swift_MailTransport
   logger:
-    class:   sfNoLogger
-    param:
-      level:   err
-      loggers: ~
+  class: sfFileLogger
+  param:
+    level:   err
+    loggers: ~
+    file:    %SF_LOG_DIR%/%SF_APP%_%SF_ENVIRONMENT%.log
 
 test:
   storage:

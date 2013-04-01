@@ -6,8 +6,28 @@
  * @subpackage car
  * @author     Luis Montealegre <montealegreluis@gmail.com>
  */
+use \Application\Container\CarContainer;
+
+/**
+ * Car actions.
+ */
 class carActions extends sfActions
 {
+    /**
+     * @var \Application\Service\CarService
+     */
+    protected $service;
+
+    /**
+     * Initialize dependency injection container
+     */
+    public function __construct($context, $moduleName, $actionName)
+    {
+        parent::__construct($context, $moduleName, $actionName);
+        $container = new CarContainer();
+        $this->service = $container['car'];
+    }
+
     /**
      * The list of cars is filtered in the user's show action, and shouldn't be accesed
      * through this controller
@@ -36,7 +56,7 @@ class carActions extends sfActions
      */
     public function executeNew(sfWebRequest $request)
     {
-        $this->form = new CarForm();
+        $this->form = $this->service->getCarForm();
         $this->form->setUserId($request->getParameter('user-id'));
     }
 
@@ -49,8 +69,8 @@ class carActions extends sfActions
     {
         $this->forward404Unless($request->isMethod(sfRequest::POST));
 
-        $this->form = new CarForm();
-        $this->processForm($request, $this->form);
+        $this->form = $this->service->getCarForm();
+        $this->processForm($request, $this->form->getName());
 
         $this->setTemplate('new');
     }
@@ -64,7 +84,7 @@ class carActions extends sfActions
     {
         $car = $this->retrieveCar($request->getParameter('id'));
 
-        $this->form = new CarForm($car);
+        $this->form = $this->service->getCarForm()->setCar($car);
     }
 
     /**
@@ -80,8 +100,8 @@ class carActions extends sfActions
 
         $car = $this->retrieveCar($request->getParameter('id'));
 
-        $this->form = new CarForm($car);
-        $this->processForm($request, $this->form);
+        $this->form = $this->service->getCarForm()->setCar($car);
+        $this->processForm($request, $this->form->getName());
 
         $this->setTemplate('edit');
     }
@@ -105,17 +125,13 @@ class carActions extends sfActions
      * Bind the information in the form with the information in the request
      *
      * @param sfWebRequest $request
-     * @param sfForm $form
+     * @param string $formName
      */
-    protected function processForm(sfWebRequest $request, sfForm $form)
+    protected function processForm(sfWebRequest $request, $formName)
     {
-        $form->bind(
-            $request->getParameter($form->getName()), $request->getFiles($form->getName())
-        );
+        if ($this->service->isValid($request->getParameter($formName))) {
 
-        if ($form->isValid()) {
-
-            $car = $form->save();
+            $car = $this->service->saveCar();
             $this->redirect(
                 'car/edit?user-id=' . $car->getUserId() . '&id=' . $car->getId()
             );
@@ -130,7 +146,7 @@ class carActions extends sfActions
      */
     protected function retrieveCar($carId)
     {
-        $car = CarTable::getInstance()->find(array($carId));
+        $car = $this->service->find($carId);
         $this->forward404Unless($car, sprintf('Car does not exist (%s).', $carId));
 
         return $car;
